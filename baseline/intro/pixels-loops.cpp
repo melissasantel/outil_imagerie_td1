@@ -4,7 +4,6 @@
 
 #include <opencv2/opencv.hpp>
 
-#include <time.h>
 
 using namespace cv;
 using namespace std;
@@ -12,14 +11,52 @@ using namespace std;
 void
 process(const char* imsname)
 {
+  cout<< "\n############### exercice : prxels-loops ##############\n"<<endl;
   Mat ims = imread(imsname, CV_LOAD_IMAGE_COLOR);
   Size s = ims.size();
   cout << "Image size H="<<s.height <<" W=" << s.width << endl;
-  clock_t t;
-  t=clock();
-  ims.at<Vec3b>(400,300) = (1/64)*ims.at<Vec3b>(400,300)*64+64/2;
-  t=clock()-t;
-  printf("Access with ’at’ method ... %f.\n",((float)t)/CLOCKS_PER_SEC);
+
+  double t;
+
+  t = (double)getTickCount();
+  for(int i = 0; i < ims.rows; i++){
+    Vec3b* ims_coord = ims.ptr<Vec3b>(i);
+    for(int j = 0; j < ims.cols; j++){
+      for(int c=0; c<3; c++){
+        ims_coord[j][c] =(1/64)*ims_coord[j][c]*64+64/2;
+      }
+    }
+  }
+
+  t = ((double)getTickCount() - t)/getTickFrequency();
+  printf("Access with pointers ... takes %f.\n",t);
+
+  t = (double)getTickCount();
+  Mat_<Vec3b>::iterator it = ims.begin<Vec3b>(), itEnd = ims.end<Vec3b>();
+  for(; it!= itEnd; ++it){
+    for(int c=0; c<3; c++){
+      (*it)[c]=(1/64)*(*it)[c]*64+64/2;
+    }
+  }
+  t = ((double)getTickCount() - t)/getTickFrequency();
+  printf("Access with iterators ... takes %f.\n",t);
+
+  t = (double)getTickCount();
+  for(int i = 0; i < ims.rows; i++){
+    for(int j = 0; j < ims.cols; j++){
+      for(int c=0; c<3; c++){
+        ims.at<Vec3b>(i,j)[c]=(1/64)*ims.at<Vec3b>(i,j)[c]*64+64/2;
+      }
+    }
+  }
+  t = ((double)getTickCount() - t)/getTickFrequency();
+  printf("Access with 'at' method ... takes %f.\n",t);
+
+
+  t = (double)getTickCount();
+  ims = (1/64)*ims*64+64/2;
+  t = ((double)getTickCount() - t)/getTickFrequency();
+  printf("Access with opencv operator redefinition ... takes %f.\n\n",t);
 
 }
 

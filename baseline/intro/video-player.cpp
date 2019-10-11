@@ -23,6 +23,7 @@ on_trackbar(int, void*)
 void
 process(const char* vidname)
 {
+  cout<< "\n############### exercice : video-player ##############\n"<<endl;
   fstream infile(vidname);
   if (infile.good() == false){
     cerr<<"The file doesn't exist. Check the location of the file\n"<<endl;
@@ -45,7 +46,7 @@ process(const char* vidname)
 
   cout << "fps=" <<fps <<endl;
   cout << "width=" << frame_width << ", height=" << frame_height <<endl;
-  cout << "total frames= " << nb_of_frame <<endl;
+  cout << "total frames= " << nb_of_frame <<"\n\n"<<endl;
 
   Mat frame;
   namedWindow("Video-player",1);

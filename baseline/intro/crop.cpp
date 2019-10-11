@@ -11,7 +11,7 @@ using namespace std;
 void
 process(const char* imsname, int i0, int j0, int w, int h)
 {
-
+	cout<< "\n############### exercice : crop ##############\n\n"<<endl;
 	Mat ims = imread(imsname);
 
 	Mat croped_image(h, w, CV_8UC3);

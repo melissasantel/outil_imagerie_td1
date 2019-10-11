@@ -15,10 +15,10 @@ process(const char* imsname, const char* imdname)
     cerr<<"The file doesn't exist. Check the location of the file\n"<<endl;
     exit(EXIT_FAILURE);
   }
-  
+  cout<< "\n############### exercice : readwriteshow ##############\n"<<endl;
   Mat ims = imread(imsname, CV_LOAD_IMAGE_COLOR);
   Size s = ims.size();
-  cout << s.height <<"x" << s.width << endl;
+  cout << "Image size H="<<s.height <<" W=" << s.width << "\n\n"<< endl;
   imshow(imsname, ims);
 
   waitKey(0);
