@@ -11,8 +11,15 @@ using namespace std;
 void
 process(const char* imsname)
 {
-  cout<< "\n############### exercice : prxels-loops ##############\n"<<endl;
-  Mat ims = imread(imsname, CV_LOAD_IMAGE_COLOR);
+  cout<< "\n############### exercice : pixels-loops ##############\n"<<endl;
+
+  //Convert the imsname image to a bigger one for the test
+  cout<<"Wait a moment.. The image is being created\n\n"<<endl;
+  string ch = "convert -resize 10240 "+string(imsname)+" ../data/lena_color_10000.png";
+  system(ch.c_str());
+
+  //Load the created image
+  Mat ims = imread("../data/lena_color_10000.png", CV_LOAD_IMAGE_COLOR);
   Size s = ims.size();
   cout << "Image size H="<<s.height <<" W=" << s.width << endl;
 
