@@ -18,6 +18,7 @@ process(const char* imsname)
 
   double t;
 
+  //Calculate the time process for pointers
   t = (double)getTickCount();
   for(int i = 0; i < ims.rows; i++){
     Vec3b* ims_coord = ims.ptr<Vec3b>(i);
@@ -31,6 +32,8 @@ process(const char* imsname)
   t = ((double)getTickCount() - t)/getTickFrequency();
   printf("Access with pointers ... takes %f.\n",t);
 
+
+  //Calculate the time process for iterators
   t = (double)getTickCount();
   Mat_<Vec3b>::iterator it = ims.begin<Vec3b>(), itEnd = ims.end<Vec3b>();
   for(; it!= itEnd; ++it){
@@ -38,9 +41,12 @@ process(const char* imsname)
       (*it)[c]=(1/64)*(*it)[c]*64+64/2;
     }
   }
+
   t = ((double)getTickCount() - t)/getTickFrequency();
   printf("Access with iterators ... takes %f.\n",t);
 
+
+  //Calculate the time process for method at
   t = (double)getTickCount();
   for(int i = 0; i < ims.rows; i++){
     for(int j = 0; j < ims.cols; j++){
@@ -52,7 +58,7 @@ process(const char* imsname)
   t = ((double)getTickCount() - t)/getTickFrequency();
   printf("Access with 'at' method ... takes %f.\n",t);
 
-
+  //Calculate the time process for opencv operator
   t = (double)getTickCount();
   ims = (1/64)*ims*64+64/2;
   t = ((double)getTickCount() - t)/getTickFrequency();

@@ -12,9 +12,9 @@ using namespace std;
 int g_slider_position;
 int g_slider_position_max;
 VideoCapture cap;
-
+//event based function for the slide bar
 void
-on_trackbar(int, void*)
+on_slidebar(int, void*)
 {
  printf("go to frame number = %d\n", g_slider_position);
  cap.set(CV_CAP_PROP_POS_FRAMES, g_slider_position);
@@ -24,12 +24,14 @@ void
 process(const char* vidname)
 {
   cout<< "\n############### exercice : video-player ##############\n"<<endl;
+
   fstream infile(vidname);
+  //Check the existence of the video
   if (infile.good() == false){
     cerr<<"The file doesn't exist. Check the location of the file\n"<<endl;
     exit(EXIT_FAILURE);
   }
-
+  //Check if the video can be open
   if(vidname)
     cap.open(vidname);
   else
@@ -49,10 +51,11 @@ process(const char* vidname)
   cout << "total frames= " << nb_of_frame <<"\n\n"<<endl;
 
   Mat frame;
-  namedWindow("Video-player",1);
+  namedWindow(vidname,1);
+  //Create a slide bar
+  createTrackbar("Slide bar", vidname, &g_slider_position, g_slider_position_max, on_slidebar);
 
-  createTrackbar("Slide bar", "Video-player", &g_slider_position, g_slider_position_max, on_trackbar);
-
+  //Play the video on the namedWindow until the video is finished or a press key
   while(1){
     current_frame = cap.get(CV_CAP_PROP_POS_FRAMES);
     std::stringstream ss;
@@ -64,7 +67,7 @@ process(const char* vidname)
         break;
 
     putText(frame,showing_frame, Point2f(50,50), FONT_HERSHEY_PLAIN, 1, Scalar(255,255,255,255));
-    imshow("Video-player",frame);
+    imshow(vidname,frame);
 
     if(current_frame>=1000){
       if(g_slider_position>=1000)

@@ -10,19 +10,21 @@ using namespace std;
 void
 process(const char* imsname, const char* imdname)
 {
+  //Check the existence of the file, if the file doesn't exist the programme stop
   fstream infile(imsname);
   if (infile.good() == false){
     cerr<<"The file doesn't exist. Check the location of the file\n"<<endl;
     exit(EXIT_FAILURE);
   }
   cout<< "\n############### exercice : readwriteshow ##############\n"<<endl;
+  //Read the image and display it whit the size
   Mat ims = imread(imsname, CV_LOAD_IMAGE_COLOR);
   Size s = ims.size();
   cout << "Image size H="<<s.height <<" W=" << s.width << "\n\n"<< endl;
   imshow(imsname, ims);
 
   waitKey(0);
-
+  //Create an image color "magenta" and display it
   Mat imd(100, 200, CV_8UC3, Scalar(255,0,255));
 
   imshow(imdname, imd);
